@@ -12,3 +12,4 @@ A site where you can view and post hiking trails from all over the US, and comme
  - Data now presists. 
  - Renamed trails.ejs to index.ejs
  - Updated the form used to add new trails to also include 'description' in addition to 'name' and 'image'.
+ - Added the show route.
