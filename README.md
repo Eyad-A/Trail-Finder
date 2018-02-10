@@ -13,3 +13,10 @@ A site where you can view and post hiking trails from all over the US, and comme
  - Renamed trails.ejs to index.ejs
  - Updated the form used to add new trails to also include 'description' in addition to 'name' and 'image'.
  - Added the show route.
+
+## Version 0.3:
+ - Refactored app.js
+ - Added the model directory and the comments model
+ - Added module.exports
+ - Added the seeds.js file
+ - Comments now display correctly on the show page

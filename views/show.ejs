@@ -1,7 +1,13 @@
 <% include partials/header %>
 
-<h1><%=trail.name%></h1>
+<h1><%= trail.name %></h1>
 <img src="<%= trail.image %>">
 <p><%= trail.description %></p>
+
+<% trail.comments.forEach(function(comment) { %>
+    <p>
+        <strong><%= comment.author %></strong> - <%= comment.text %>
+    </p>
+<% }) %>
 
 <% include partials/footer %>

@@ -1,33 +1,14 @@
 var express =    require("express"),
     app =        express(),
     bodyParser = require("body-parser"),
-    mongoose =   require("mongoose");
-
+    mongoose =   require("mongoose"),
+    Trail =      require("./models/trail"),
+    seedDB =     require("./seeds");
+    
 mongoose.connect("mongodb://localhost/trail_finder");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
-
-//schema setup
-var trailSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
-
-var Trail = mongoose.model("Trail", trailSchema);
-
-// Trail.create({
-//     name: "Spring Creek",
-//     image: "https://farm6.staticflickr.com/5240/5901787178_5eef7e4134.jpg",
-//     description: "A very long trail"
-// }, function(err, trail) {
-//     if (err) {
-//         console.log(err);
-//     } else {
-//         console.log("The following trail has been created:");
-//         console.log(trail);
-//     }
-// });
+seedDB();
 
 // var trails = [
 //             {name: "Spring Creek", image: "https://farm6.staticflickr.com/5240/5901787178_5eef7e4134.jpg"},
@@ -80,13 +61,14 @@ app.get("/trails/new", function(req, res) {
 
 //SHOW
 app.get("/trails/:id", function(req, res) {
-    Trail.findById(req.params.id, function(err, foundTrail) {
+    Trail.findById(req.params.id).populate("comments").exec(function(err, foundTrail) {
         if (err) {
             console.log(err);
         } else {
+            console.log(foundTrail);
             res.render("show", {trail: foundTrail});
         }
-    })
+    });
 });
 
 app.listen(process.env.PORT, process.env.IP, function() {
