@@ -1,8 +1,12 @@
-<% include partials/header %>
+<% include ../partials/header %>
 
 <h1><%= trail.name %></h1>
 <img src="<%= trail.image %>">
 <p><%= trail.description %></p>
+
+<p>
+    <a class="btn btn-success" href="/trails/<%= trail._id %>/comments/new">Add a new comment</a>
+</p>
 
 <% trail.comments.forEach(function(comment) { %>
     <p>
@@ -10,4 +14,4 @@
     </p>
 <% }) %>
 
-<% include partials/footer %>
+<% include ../partials/footer %>

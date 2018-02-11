@@ -3,6 +3,7 @@ var express =    require("express"),
     bodyParser = require("body-parser"),
     mongoose =   require("mongoose"),
     Trail =      require("./models/trail"),
+    Comment =    require("./models/comment"),
     seedDB =     require("./seeds");
     
 mongoose.connect("mongodb://localhost/trail_finder");
@@ -32,7 +33,7 @@ app.get("/trails", function(req, res) {
             if (err) {
                 console.log(err);
             } else {
-                 res.render("index", {trails: allTrails});
+                 res.render("trails/index", {trails: allTrails});
             }
         });
 });
@@ -56,7 +57,7 @@ app.post("/trails", function(req, res) {
 
 //NEW
 app.get("/trails/new", function(req, res) {
-    res.render("new.ejs");
+    res.render("trails/new");
 });
 
 //SHOW
@@ -66,7 +67,42 @@ app.get("/trails/:id", function(req, res) {
             console.log(err);
         } else {
             console.log(foundTrail);
-            res.render("show", {trail: foundTrail});
+            res.render("trails/show", {trail: foundTrail});
+        }
+    });
+});
+
+// ================
+// Comments Routes
+//=================
+
+app.get("/trails/:id/comments/new", function(req, res) {
+    Trail.findById(req.params.id, function(err, trail) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("comments/new", {trail: trail});
+            console.log(trail);
+        }
+    });
+    
+});
+
+app.post("/trails/:id/comments", function(req, res) {
+    Trail.findById(req.params.id, function(err, trail) {
+        if (err) {
+            console.log(err);
+            res.redirect("/trails");
+        } else {
+            Comment.create(req.body.comment, function(err, comment) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    trail.comments.push(comment._id);
+                    trail.save();
+                    res.redirect("/trails/" + trail._id);
+                }
+            });
         }
     });
 });
