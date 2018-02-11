@@ -26,3 +26,8 @@ A site where you can view and post hiking trails from all over the US, and comme
  - Added form for adding new comments
  - Split templates into two different directories: 'camps' and 'comments'
  - Updated links to the partials
+
+## Version 0.3.2:
+ - Added main.css for custom styling
+ - Added sidebar to the show page
+ - Added more styling to comments

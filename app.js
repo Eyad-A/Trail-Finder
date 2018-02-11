@@ -9,6 +9,7 @@ var express =    require("express"),
 mongoose.connect("mongodb://localhost/trail_finder");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static(__dirname + "/public"));
 seedDB();
 
 // var trails = [
