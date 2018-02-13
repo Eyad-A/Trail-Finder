@@ -31,3 +31,9 @@ A site where you can view and post hiking trails from all over the US, and comme
  - Added main.css for custom styling
  - Added sidebar to the show page
  - Added more styling to comments
+
+## Version 0.4:
+ - Added passport, passport-local, passport-local-mongoose, and express-session
+ - Added the User model
+ - Added the register, login, and logout routes and templates
+ - Added logic to display the right links in the navbar
