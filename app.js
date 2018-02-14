@@ -9,6 +9,11 @@ var express     = require("express"),
     User        = require("./models/user"),
     seedDB      = require("./seeds");
     
+//REQUIRED ROUTES
+var commentRoutes = require("./routes/comments"),
+    trailRoutes = require("./routes/trails"),
+    indexRoutes = require("./routes/index");
+    
 mongoose.connect("mongodb://localhost/trail_finder");
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
@@ -43,134 +48,10 @@ app.use(function(req, res, next) {
 //             {name: "The Highline Trail", image: "https://farm6.staticflickr.com/5455/9402224338_7ced8f43eb.jpg"}
 //         ];
 
-app.get("/", function(req, res) {
-    res.render("landing");
-});
 
-//INDEX
-app.get("/trails", function(req, res) {
-    //Get all trails from DB
-    Trail.find({}, function(err, allTrails) {
-        if (err) {
-            console.log(err);
-        } else {
-             res.render("trails/index", {trails: allTrails});
-        }
-    });
-});
-
-//CREATE
-app.post("/trails", function(req, res) {
-    var name = req.body.name;
-    var image = req.body.image;
-    var desc = req.body.description;
-    var newTrail = {name: name, image: image, description: desc};
-    //Create a new trail and save to DB
-    Trail.create(newTrail, function(err, newlyCreate) {
-        if (err) {
-            console.log(err);
-        } else {
-            //Redirect back to trails page
-            res.redirect("/trails");
-        }
-    });
-});
-
-//NEW
-app.get("/trails/new", function(req, res) {
-    res.render("trails/new");
-});
-
-//SHOW
-app.get("/trails/:id", function(req, res) {
-    Trail.findById(req.params.id).populate("comments").exec(function(err, foundTrail) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log(foundTrail);
-            res.render("trails/show", {trail: foundTrail});
-        }
-    });
-});
-
-// ================
-// Comments Routes
-//=================
-
-app.get("/trails/:id/comments/new", isLoggedIn, function(req, res) {
-    Trail.findById(req.params.id, function(err, trail) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.render("comments/new", {trail: trail});
-            console.log(trail);
-        }
-    });
-    
-});
-
-app.post("/trails/:id/comments", isLoggedIn, function(req, res) {
-    Trail.findById(req.params.id, function(err, trail) {
-        if (err) {
-            console.log(err);
-            res.redirect("/trails");
-        } else {
-            Comment.create(req.body.comment, function(err, comment) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    trail.comments.push(comment._id);
-                    trail.save();
-                    res.redirect("/trails/" + trail._id);
-                }
-            });
-        }
-    });
-});
-
-//AUTH ROUTES
-
-app.get("/register", function(req, res) {
-    res.render("register");
-});
-
-app.post("/register", function(req, res) {
-    var newUser = new User({username: req.body.username});
-    User.register(newUser, req.body.password, function(err, user) {
-        if (err) {
-            console.log(err);
-            return res.render("register");
-        }
-        passport.authenticate("local")(req, res, function() {
-            res.redirect("/trails");
-        });
-    });
-});
-
-//Login
-app.get("/login", function(req, res) {
-    res.render("login");
-});
-
-app.post("/login", passport.authenticate("local", 
-    {
-        successRedirect: "/trails",
-        failureRedirect: "/login"
-    }), function(req, res) {
-});
-
-//LOGOUT ROUTES
-app.get("/logout", function(req, res) {
-    req.logout();
-    res.redirect("/trails");
-});
-
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/login");
-}
+app.use("/", indexRoutes);
+app.use("/trails", trailRoutes);
+app.use("/trails/:id/comments", commentRoutes);
 
 app.listen(process.env.PORT, process.env.IP, function() {
     console.log("TrailFinder has started!");
