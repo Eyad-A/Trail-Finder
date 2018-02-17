@@ -41,3 +41,8 @@ A site where you can view and post hiking trails from all over the US, and comme
 ## Version 0.4.1
  - Refactored app.js
  - Added routes directory and created a new file for each of: trails, comments, and index
+
+## Version 0.5.0
+ - Added users and comments association
+ - Added author to the comment model
+ - Comments author's name is now saved automatically
