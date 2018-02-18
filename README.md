@@ -46,3 +46,8 @@ A site where you can view and post hiking trails from all over the US, and comme
  - Added users and comments association
  - Added author to the comment model
  - Comments author's name is now saved automatically
+
+## Version 0.5.1
+ - Added user and trails association
+ - Username now saves when creating a new trail
+ - Only logged in users can now create new trails
