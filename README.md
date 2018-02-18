@@ -52,6 +52,11 @@ A site where you can view and post hiking trails from all over the US, and comme
  - Username now saves when creating a new trail
  - Only logged in users can now create new trails
 
-# Version 0.6.0
+## Version 0.6.0
  - Added edit and destroy routes for trails
  - Added method-override
+
+## Version 0.6.1
+ - Added authorization for trails
+ - Users can now only edit/delete their own trails
+ - Added logic to only show edit/delete buttons if the trail's owner is logged in
