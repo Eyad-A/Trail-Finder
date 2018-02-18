@@ -54,6 +54,40 @@ router.get("/:id", function(req, res) {
     });
 });
 
+//EDIT TRAIL ROUTE
+router.get("/:id/edit", function(req, res) {
+    Trail.findById(req.params.id, function(err, foundTrail) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.render("trails/edit", {trail: foundTrail});
+        }
+    });
+    
+});
+
+//UPDATE TRAIL ROUTE
+router.put("/:id", function(req, res) {
+    Trail.findByIdAndUpdate(req.params.id, req.body.trail, function(err, updatedTrail) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect("/trails/" + req.params.id);
+        }
+    });
+});
+
+//DESTROY TRAIL ROUTE
+router.delete("/:id", function(req, res) {
+    Trail.findByIdAndRemove(req.params.id, function(err) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect("/trails");
+        }
+    });
+});
+
 //MIDDLEWARE
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
