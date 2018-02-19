@@ -60,3 +60,9 @@ A site where you can view and post hiking trails from all over the US, and comme
  - Added authorization for trails
  - Users can now only edit/delete their own trails
  - Added logic to only show edit/delete buttons if the trail's owner is logged in
+
+## Version 0.6.2
+ - Added edit, update, and delete routes for comments
+ - Added edit and delete buttons for comments
+ - Added user authorization for comments
+ - Added logic to only show edit/delete buttons for comment's owner
