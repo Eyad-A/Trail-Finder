@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var Trail = require("../models/trail");
+var middleware = require("../middleware");
 
 //INDEX
 router.get("/", function(req, res) {
@@ -15,7 +16,7 @@ router.get("/", function(req, res) {
 });
 
 //CREATE
-router.post("/", isLoggedIn, function(req, res) {
+router.post("/", middleware.isLoggedIn, function(req, res) {
     var name = req.body.name;
     var image = req.body.image;
     var desc = req.body.description;
@@ -38,7 +39,7 @@ router.post("/", isLoggedIn, function(req, res) {
 });
 
 //NEW
-router.get("/new", isLoggedIn,  function(req, res) {
+router.get("/new", middleware.isLoggedIn,  function(req, res) {
     res.render("trails/new");
 });
 
@@ -55,14 +56,14 @@ router.get("/:id", function(req, res) {
 });
 
 //EDIT TRAIL ROUTE
-router.get("/:id/edit", checkTrailOwnership, function(req, res) {
+router.get("/:id/edit", middleware.checkTrailOwnership, function(req, res) {
     Trail.findById(req.params.id, function(err, foundTrail) {
         res.render("trails/edit", {trail: foundTrail});
     });
 });
 
 //UPDATE TRAIL ROUTE
-router.put("/:id", checkTrailOwnership, function(req, res) {
+router.put("/:id", middleware.checkTrailOwnership, function(req, res) {
     Trail.findByIdAndUpdate(req.params.id, req.body.trail, function(err, updatedTrail) {
         if (err) {
             console.log(err);
@@ -73,7 +74,7 @@ router.put("/:id", checkTrailOwnership, function(req, res) {
 });
 
 //DESTROY TRAIL ROUTE
-router.delete("/:id", checkTrailOwnership, function(req, res) {
+router.delete("/:id", middleware.checkTrailOwnership, function(req, res) {
     Trail.findByIdAndRemove(req.params.id, function(err) {
         if (err) {
             console.log(err);
@@ -82,33 +83,5 @@ router.delete("/:id", checkTrailOwnership, function(req, res) {
         }
     });
 });
-
-//MIDDLEWARES
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect("/login");
-}
-
-function checkTrailOwnership(req, res, next) {
-    if (req.isAuthenticated()) {
-        Trail.findById(req.params.id, function(err, foundTrail) {
-            if (err) {
-                res.redirect("back");
-            } else {
-                //Does the user own the trail?
-                if (foundTrail.author.id.equals(req.user._id)) {
-                    next();
-                } else {
-                    res.redirect("back");
-                }
-                
-            }
-        });
-    } else {
-       res.redirect("back");
-    }
-}
 
 module.exports = router;

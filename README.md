@@ -66,3 +66,8 @@ A site where you can view and post hiking trails from all over the US, and comme
  - Added edit and delete buttons for comments
  - Added user authorization for comments
  - Added logic to only show edit/delete buttons for comment's owner
+
+## Version 0.7.0
+ - Refactored the middlewares
+ - Added better error handling through connect-flash
+ - Added better styling for flash messages
