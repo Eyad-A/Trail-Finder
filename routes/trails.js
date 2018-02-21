@@ -10,7 +10,7 @@ router.get("/", function(req, res) {
         if (err) {
             console.log(err);
         } else {
-             res.render("trails/index", {trails: allTrails});
+             res.render("trails/index", {trails: allTrails, page: 'trails'});
         }
     });
 });
@@ -20,19 +20,18 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
     var name = req.body.name;
     var image = req.body.image;
     var desc = req.body.description;
+    var distance = req.body.distance;
     var author = {
         id: req.user._id,
         username: req.user.username
     };
-    var newTrail = {name: name, image: image, description: desc, author: author};
+    var newTrail = {name: name, image: image, description: desc, distance: distance, author: author};
     //Create a new trail and save to DB
     Trail.create(newTrail, function(err, newlyCreated) {
         if (err) {
             console.log(err);
         } else {
             //Redirect back to trails page
-            console.log("=============");
-            console.log(newlyCreated);
             res.redirect("/trails");
         }
     });

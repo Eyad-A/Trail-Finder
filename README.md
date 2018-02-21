@@ -71,3 +71,8 @@ A site where you can view and post hiking trails from all over the US, and comme
  - Refactored the middlewares
  - Added better error handling through connect-flash
  - Added better styling for flash messages
+
+## Version 0.7.1
+ - Redesigned the landing page and added sliding animation
+ - Added the ability for users to specify the length for each trail they add in miles
+ - Made navbar improvements to make it more responsive. Now works properly on mobile

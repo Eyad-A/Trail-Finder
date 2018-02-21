@@ -1,6 +1,5 @@
 <% include ../partials/header %>
 
-<div class="container">
     <div class="row">
         <div class="col-md-3">
             <p class="lead">TrailFinder</p>
@@ -14,7 +13,7 @@
             <div class="thumbnail">
                 <img class="img-responsive" src="<%= trail.image %>">
                 <div class="caption">
-                    <h4 class="pull-right">2.3 miles</h4>
+                    <h4 class="pull-right"><%= trail.distance %> miles</h4>
                     <h4><a><%= trail.name %></a></h4>
                     <p><%= trail.description %></p>
                     <p><em>Added By <%= trail.author.username %></em></p>
@@ -51,6 +50,5 @@
             </div>
         </div>
     </div>
-</div>
 
 <% include ../partials/footer %>

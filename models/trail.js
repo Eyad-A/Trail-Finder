@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var trailSchema = new mongoose.Schema({
     name: String,
+    distance: String,
     image: String,
     description: String,
     author: {
