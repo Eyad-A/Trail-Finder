@@ -8,6 +8,7 @@
                 <li class="list-group-item">Info 2</li>
                 <li class="list-group-item">Info 3</li>
             </div>
+            <div id="map"></div>
         </div>
         <div class="col-md-9">
             <div class="thumbnail">
@@ -15,8 +16,9 @@
                 <div class="caption">
                     <h4 class="pull-right"><%= trail.distance %> miles</h4>
                     <h4><a><%= trail.name %></a></h4>
+                    <p>Location: <%= trail.location %></p>
                     <p><%= trail.description %></p>
-                    <p><em>Added By <%= trail.author.username %></em></p>
+                    <p><em>Added By <%= trail.author.username %>, <%= moment(trail.createdAt).fromNow() %> </em></p>
                     <% if (currentUser && trail.author.id.equals(currentUser._id)) { %>
                         <a class="btn btn-warning" href="/trails/<%= trail._id %>/edit">Edit</a>
                         <form class="delete-form" action="/trails/<%= trail._id %>?_method=DELETE" method="post">
@@ -34,7 +36,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <strong><%= comment.author.username %></strong>
-                            <span class="pull-right">10 days ago</span>
+                            <span class="pull-right"> <%= moment(comment.createdAt).fromNow() %></span>
                             <p>
                                 <%= comment.text %>
                             </p>
@@ -50,5 +52,34 @@
             </div>
         </div>
     </div>
+
+<script>
+  function initMap() {
+    var lat = <%= trail.lat %>;
+    var lng = <%= trail.lng %>;
+    var center = {lat: lat, lng: lng };
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 8,
+        center: center,
+        scrollwheel: false
+    });
+    var contentString = `
+      <strong><%= trail.name %><br />
+      <%= trail.location %></strong>
+      <p><%= trail.description %></p>
+    `
+    var infowindow = new google.maps.InfoWindow({
+      content: contentString
+    });
+    var marker = new google.maps.Marker({
+        position: center,
+        map: map
+    });
+    marker.addListener('click', function() {
+      infowindow.open(map, marker);
+    });
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMM7Pfad4zZ9Rdb2FXTZpTBpCi5w4oAYA&callback=initMap"></script>
 
 <% include ../partials/footer %>
