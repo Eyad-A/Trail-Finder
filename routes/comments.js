@@ -8,10 +8,10 @@ var middleware = require("../middleware");
 router.get("/new", middleware.isLoggedIn, function(req, res) {
     Trail.findById(req.params.id, function(err, trail) {
         if (err) {
+            req.flash("error", "Something went wrong");
             console.log(err);
         } else {
             res.render("comments/new", {trail: trail});
-            console.log(trail);
         }
     });
     
@@ -23,10 +23,11 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
         if (err) {
             req.flash("error", "Something went wrong");
             console.log(err);
-            res.redirect("/trails");
+            res.redirect("/trails/" + trail._id);
         } else {
             Comment.create(req.body.comment, function(err, comment) {
                 if (err) {
+                    req.flash("error", "Something went wrong");
                     console.log(err);
                 } else {
                     //Add username and id to comment
@@ -47,6 +48,7 @@ router.post("/", middleware.isLoggedIn, function(req, res) {
 router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req, res) {
     Comment.findById(req.params.comment_id, function(err, foundComment) {
         if (err) {
+            req.flash("error", "Something went wrong");
             res.redirect("back");
         } else {
             res.render("comments/edit", {trail_id: req.params.id, comment: foundComment});
@@ -58,8 +60,10 @@ router.get("/:comment_id/edit", middleware.checkCommentOwnership, function(req, 
 router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res) {
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment) {
         if (err) {
+            req.flash("error", "Something went wrong");
             res.redirect("back");
         } else {
+            req.flash("success", "Comment was successfuly updated");
             res.redirect("/trails/" + req.params.id);
         }
     });
@@ -69,6 +73,7 @@ router.put("/:comment_id", middleware.checkCommentOwnership, function(req, res) 
 router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, res) {
     Comment.findByIdAndRemove(req.params.comment_id, function(err) {
         if (err) {
+            req.flash("error", "Something went wrong");
             res.redirect("back");
         } else {
             req.flash("success", "Comment deleted");

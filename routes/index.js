@@ -35,12 +35,19 @@ router.get("/login", function(req, res) {
 });
 
 //LOGIN POST ROUTE
-router.post("/login", passport.authenticate("local", 
-    {
+router.post("/login", function (req, res, next) {
+    passport.authenticate("local", {
+        //Details Match
         successRedirect: "/trails",
-        failureRedirect: "/login"
-    }), function(req, res) {
+        //Details Dont Match
+        failureRedirect: "/login",
+        //Success Message
+        successFlash: "Welcome Back To TrailFinder " + req.body.username + "!",
+        //Failure Message
+        failureFlash: "Login failed, check your username or password"
+    })(req, res);
 });
+ 
 
 //LOGOUT ROUTE
 router.get("/logout", function(req, res) {

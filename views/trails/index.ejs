@@ -3,7 +3,7 @@
     <header class="jumbotron">
         <div class="container">
             <h1>Welcome to TrailFinder</h1>
-            <p>View hiking trails from all over the US!</p>
+            <p>View hiking trails from all over the world!</p>
             <p>
                 <a class="btn btn-primary btn-lg" href="/trails/new">Add new hiking trail</a>
             </p>
@@ -14,7 +14,7 @@
         <% trails.forEach(function(trail) { %>
             <div class="col-md-3 col-sm-6">
                 <div class="thumbnail">
-                    <img src="<%= trail.image %>">
+                    <img id="imgfix" src="<%= trail.image %>">
                     <div class="caption">
                         <h4><%= trail.name %></h4>
                     </div>
@@ -26,5 +26,6 @@
         
         <% }); %>
     </div>
+    <div class="row text-center footer">Created by <a target="_blank" href="http://EyadAlshafi.com">Eyad Alshafi</a></div>
 
 <% include ../partials/footer %>

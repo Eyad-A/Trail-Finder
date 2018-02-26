@@ -19,19 +19,21 @@ router.get("/", function(req, res) {
 router.post("/", middleware.isLoggedIn, function(req, res) {
     var name = req.body.name;
     var image = req.body.image;
-    var desc = req.body.description;
+    var location = req.body.location;
     var distance = req.body.distance;
     var author = {
         id: req.user._id,
         username: req.user.username
     };
-    var newTrail = {name: name, image: image, description: desc, distance: distance, author: author};
+    var newTrail = {name: name, image: image, location: location, distance: distance, author: author};
     //Create a new trail and save to DB
     Trail.create(newTrail, function(err, newlyCreated) {
         if (err) {
+            req.flash("error", "Something went wrong");
             console.log(err);
         } else {
             //Redirect back to trails page
+            req.flash("success", "new trail has been created");
             res.redirect("/trails");
         }
     });
@@ -46,9 +48,9 @@ router.get("/new", middleware.isLoggedIn,  function(req, res) {
 router.get("/:id", function(req, res) {
     Trail.findById(req.params.id).populate("comments").exec(function(err, foundTrail) {
         if (err) {
+            req.flash("error", "Something went wrong");
             console.log(err);
         } else {
-            console.log(foundTrail);
             res.render("trails/show", {trail: foundTrail});
         }
     });
@@ -65,8 +67,10 @@ router.get("/:id/edit", middleware.checkTrailOwnership, function(req, res) {
 router.put("/:id", middleware.checkTrailOwnership, function(req, res) {
     Trail.findByIdAndUpdate(req.params.id, req.body.trail, function(err, updatedTrail) {
         if (err) {
+            req.flash("error", "Something went wrong");
             console.log(err);
         } else {
+            req.flash("success", "Updated successfully!");
             res.redirect("/trails/" + req.params.id);
         }
     });
@@ -76,8 +80,10 @@ router.put("/:id", middleware.checkTrailOwnership, function(req, res) {
 router.delete("/:id", middleware.checkTrailOwnership, function(req, res) {
     Trail.findByIdAndRemove(req.params.id, function(err) {
         if (err) {
+            req.flash("error", "Something went wrong!");
             console.log(err);
         } else {
+            req.flash("success", "Deletion was successful!");
             res.redirect("/trails");
         }
     });

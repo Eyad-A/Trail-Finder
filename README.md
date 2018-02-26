@@ -76,3 +76,11 @@ A site where you can view and post hiking trails from all over the US, and comme
  - Redesigned the landing page and added sliding animation
  - Added the ability for users to specify the length for each trail they add in miles
  - Made navbar improvements to make it more responsive. Now works properly on mobile
+
+## Version 0.7.2
+ - Added moment.js
+ - Trails and comments now show time since created
+
+## Version 0.7.3
+ - Made UI imporvements and bug fixes to the index and the show page
+ - Removed 'description' from trails and replaced it with 'location'

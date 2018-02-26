@@ -3,7 +3,7 @@ var trailSchema = new mongoose.Schema({
     name: String,
     distance: String,
     image: String,
-    description: String,
+    location: String,
     createdAt: { type: Date, default: Date.now },
     author: {
         id: {

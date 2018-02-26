@@ -2,10 +2,24 @@
     width: 100%;
 }
 
+#imgfix {
+    width: 100%;
+    height: 200px;
+}
+
 .thumbnail {
     padding: 0;
 }
 
+.comment-spacer {
+    margin-top: 20px;
+}
+
 .delete-form {
     display: inline;
+}
+
+.footer {
+    margin-top: 10px;
+    margin-bottom: 30px;
 }
