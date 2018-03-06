@@ -90,5 +90,5 @@ A site where you can view and post hiking trails from all over the US, and comme
  - More UI imporvements added
 
 ## Version 1.0.1
- - Added enviornmental variable for database url
+ - Added environmental variable for database url
  - Made more UI improvements to the index page
