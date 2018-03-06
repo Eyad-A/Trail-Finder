@@ -15,9 +15,8 @@ var commentRoutes = require("./routes/comments"),
     trailRoutes = require("./routes/trails"),
     indexRoutes = require("./routes/index");
     
-    
-mongoose.connect(process.env.DATABASEURL);
-//mongoose.connect("mongodb://eyad:PASSWORD_REMOVED@ds247648.mlab.com:47648/trails");
+var url = process.env.DATABASEURL || "mongodb://localhost/trail_finder";
+mongoose.connect(url);
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));

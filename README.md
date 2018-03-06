@@ -88,3 +88,7 @@ A site where you can view and post hiking trails from all over the US, and comme
 ## Version 1.0.0
  - Added mongolab and launched on heroku
  - More UI imporvements added
+
+## Version 1.0.1
+ - Added enviornmental variable for database url
+ - Made more UI improvements to the index page
